@@ -154,6 +154,20 @@
            05 CL-CHANGE        PIC Z,ZZZ,ZZ9.99-.
            05 FILLER           PIC X(4) VALUE SPACE.
            05 CL-PERCENT       PIC ZZZ9.9-.
+       
+       01  BRANCH-TOTAL-LINE.
+           05 FILLER        PIC X(21) VALUE SPACE.
+           05 FILLER        PIC X(13) VALUE "BRANCH TOTAL".
+           05 FILLER        PIC X(5) VALUE SPACE.
+           05 BTL-THIS      PIC Z,ZZZ,ZZ9.99-.
+           05 FILLER        PIC X(4) VALUE SPACE.
+           05 BTL-LAST      PIC Z,ZZZ,ZZ9.99-.
+           05 FILLER        PIC X(4) VALUE SPACE.
+           05 BTL-CHANGE    PIC Z,ZZZ,ZZ9.99-.
+           05 FILLER        PIC X(4) VALUE SPACE.
+           05 BTL-PERCENT   PIC ZZZ9.9-.
+           05 FILLER        PIC X(2) VALUE SPACE.
+           05 FILLER        PIC X VALUE "*". 
 
        01  GRAND-TOTAL-LINE-1.
            05 FILLER           PIC X(43) VALUE SPACE.
