@@ -11,13 +11,13 @@
        INPUT-OUTPUT SECTION.
 
        FILE-CONTROL.
-           SELECT I_CUSTMAST ASSIGN TO CUSTMAST.
-           SELECT O_RPT3000 ASSIGN TO RPT3000.
+           SELECT I-CUSTMAST ASSIGN TO CUSTMAST.
+           SELECT O-RPT3000 ASSIGN TO RPT3000.
 
        DATA DIVISION.
        FILE SECTION.
 
-       FD  I_CUSTMAST
+       FD  I-CUSTMAST
            RECORDING MODE IS F
            LABEL RECORDS ARE STANDARD
            RECORD CONTAINS 130 CHARACTERS
@@ -29,9 +29,9 @@
            05 CM-CUSTOMER-NAME       PIC X(20).
            05 CM-SALES-THIS-YTD      PIC S9(5)V99.
            05 CM-SALES-LAST-YTD      PIC S9(5)V99.
-           05 FILLER                 PIC X(87).
+           05 FILLER                 PIC X(83).
 
-       FD  O_RPT3000
+       FD  O-RPT3000
            RECORDING MODE IS F
            LABEL RECORDS ARE STANDARD
            RECORD CONTAINS 130 CHARACTERS
@@ -81,7 +81,7 @@
            05 FILLER                 PIC X     VALUE "/".
            05 HL1-YEAR               PIC 9(4).
            05 FILLER                 PIC X(16) VALUE SPACE.
-           05 FILLER                 PIC X(27) VALUE "YEAR-TO-DATE SALES REPORT".
+           05 FILLER                 PIC X(27) VALUE "YTD SALES REPORT".
            05 FILLER                 PIC X(22) VALUE SPACE.
            05 FILLER                 PIC X(7)  VALUE "PAGE:  ".
            05 HL1-PAGE               PIC ZZZ9.
@@ -170,8 +170,8 @@
        PROCEDURE DIVISION.
 
        000-PREPARE-SALES-REPORT.
-           OPEN INPUT  I_CUSTMAST
-                OUTPUT O_RPT3000
+           OPEN INPUT  I-CUSTMAST
+                OUTPUT O-RPT3000
 
            PERFORM 230-PRINT-HEADINGS
            PERFORM 210-READ-CUSTOMER-RECORD
@@ -188,11 +188,11 @@
            PERFORM 400-PRINT-BRANCH-TOTAL
            PERFORM 300-PRINT-GRAND-TOTALS
 
-           CLOSE I_CUSTMAST O_RPT3000
+           CLOSE I-CUSTMAST O-RPT3000
            STOP RUN.
 
        210-READ-CUSTOMER-RECORD.
-           READ I_CUSTMAST
+           READ I-CUSTMAST
                AT END
                    MOVE "Y" TO CUSTMAST-EOF-SWITCH
            END-READ.
@@ -210,11 +210,10 @@
                PERFORM 230-PRINT-HEADINGS
            END-IF
 
-           SUBTRACT CM-SALES-LAST-YTD
-               FROM CM-SALES-THIS-YTD
-               GIVING WS-CHANGE-AMOUNT
+           COMPUTE WS-CHANGE-AMOUNT =
+               CM-SALES-THIS-YTD - CM-SALES-LAST-YTD.
 
-           IF CM-SALES-LAST-YTD NOT = ZERO
+           IF NOT CM-SALES-LAST-YTD = ZERO
                COMPUTE WS-CHANGE-PERCENT =
                    (WS-CHANGE-AMOUNT / CM-SALES-LAST-YTD) * 100
            ELSE
