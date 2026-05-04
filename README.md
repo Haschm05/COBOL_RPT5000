@@ -54,54 +54,9 @@ For each run, the program:
 
 ## Output Example
 RPT6000:
----
-
-## COBOL Concepts Used
-
-### 1. Control Break Logic
-The program detects changes in **Branch** or **Sales Representative** to trigger totals.
-
-When a change occurs:
-- Prints totals
-- Resets accumulators
-
-Example:
-IF WS-CURRENT-BRANCH NOT = WS-PREVIOUS-BRANCH
 
 ---
 
-### 2. Accumulators (Totals)
-Values are continuously added and rolled up:
-ADD CM-SALES-THIS-YTD TO ST-THIS-YTD
-
-Totals are calculated at:
-- Salesrep level → Branch level → Grand total
-
----
-
-### 3. Percentage Calculation
-COMPUTE WS-CHANGE-PERCENT =
-(WS-CHANGE-AMOUNT / CM-SALES-LAST-YTD) * 100
-
-Special case to prevent division by zero:
-
-IF CM-SALES-LAST-YTD = 0
-MOVE 999.9
-
----
-
-### 4. Data Formatting (PIC Clauses)
-- `Z,ZZZ,ZZ9.99-` → formatted numeric output  
-- `X(20)` → text field  
-- `9(5)` → numeric field  
-
----
-
-### 5. File Handling
-- Reads from input file (`I_CUSTMAST`)
-- Writes formatted report to output file (`O_RPT5000`)
-
----
 ### Resources
 - [GeeksForGeeks](https://www.geeksforgeeks.org/cobol/file-handling-in-cobol/?utm_source=chatgpt.com)
 - Note: GeeksForGeeks is good for help when troubleshooting or getting broken code working.
